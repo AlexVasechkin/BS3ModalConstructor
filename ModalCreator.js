@@ -266,3 +266,36 @@ function createSubmitFooterBtn() {
 
     return Button;
 }
+
+function createModal(options) {
+    options = options || {};
+    options.ModalFormConfig = options.ModalFormConfig || {};
+    options.FormFields = options.FormFields || {};
+
+    let ModalOuter = createModalOuter(ModalID);
+    let ModalDialog = createModalDialog();
+    ModalOuter.append(ModalDialog);
+
+    let ModalContent = createForm(options.ModalFormConfig);
+    ModalDialog.append(ModalContent);
+
+    let ModalHeader = createModalHeader();
+    let ModalTopCloseBtn = createModalCloseButton();
+    ModalHeader.append(createModalCloseButton());
+    ModalHeader.append(createModalTitle());
+    ModalContent.append(ModalHeader);
+
+    let ModalBody = createModalBody();
+    ModalContent.append(ModalBody);
+
+    options.FormFields.inputs.forEach(function(element, index, array){
+        ModalBody.append(createInputGroup(element));
+    });
+
+    let ModalFooter = createModalFooter();
+    ModalContent.append(ModalFooter);
+    ModalFooter.append(createCloseFooterBtn());
+    ModalFooter.append(createSubmitFooterBtn());
+
+    return ModalOuter;
+}
