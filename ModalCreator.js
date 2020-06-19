@@ -1,4 +1,6 @@
-function createModalOuter(id = '') {
+function createModalOuter(id) {
+    id = id || '';
+
     let ModalOuter = document.createElement('div');
 
     ModalOuter.classList.add('modal');
@@ -7,10 +9,7 @@ function createModalOuter(id = '') {
     ModalOuter.setAttribute('tabindex', '-1');
     ModalOuter.setAttribute('role', 'dialog');
 
-    if (   (typeof(id) == 'string')
-        && (id.length > 1)
-       )
-    {
+    if (typeof id == 'string') {
         ModalOuter.setAttribute('id', id);
     }
 
@@ -274,7 +273,7 @@ function createModal(options) {
     options.ModalFormConfig = options.ModalFormConfig || {};
     options.FormFields = options.FormFields || {};
 
-    let ModalOuter = createModalOuter(ModalID);
+    let ModalOuter = createModalOuter(options.ModalID);
     let ModalDialog = createModalDialog();
     ModalOuter.append(ModalDialog);
 
@@ -282,7 +281,6 @@ function createModal(options) {
     ModalDialog.append(ModalContent);
 
     let ModalHeader = createModalHeader();
-    let ModalTopCloseBtn = createModalCloseButton();
     ModalHeader.append(createModalCloseButton());
     ModalHeader.append(createModalTitle(options.ModalTitle));
     ModalContent.append(ModalHeader);
