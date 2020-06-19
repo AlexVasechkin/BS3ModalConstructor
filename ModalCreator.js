@@ -60,11 +60,13 @@ function createModalContent() {
 
 
 
-function createModalTitle() {
+function createModalTitle(title) {
+    title = title || '';
+
     let ModalTitle = document.createElement('div');
     ModalTitle.classList.add('modal-title');
 
-    ModalTitle.innerHTML = 'Узнать о поступлении';
+    ModalTitle.innerHTML = title;
 
     return ModalTitle;
 }
@@ -282,7 +284,7 @@ function createModal(options) {
     let ModalHeader = createModalHeader();
     let ModalTopCloseBtn = createModalCloseButton();
     ModalHeader.append(createModalCloseButton());
-    ModalHeader.append(createModalTitle());
+    ModalHeader.append(createModalTitle(options.ModalTitle));
     ModalContent.append(ModalHeader);
 
     let ModalBody = createModalBody();
