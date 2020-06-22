@@ -268,6 +268,91 @@ function createSubmitFooterBtn() {
     return Button;
 }
 
+
+function createTag(options) {
+    options = options || {};
+    options.Classes = options.Classes || [];
+    options.Attributes = options.Attributes || [];
+
+
+    if (   (typeof options.TagName != 'string')
+        || (options.TagName == '')
+       ) {
+        return null;
+    }
+
+    let obj = document.createElement(options.tagName);
+
+    options.Classes.forEach(function(element, index, array) {
+        obj.classList.add(element);
+    });
+
+    options.Attributes.forEach(function(element, index, array) {
+        obj.setAttribute(element.key, element.value);
+    });
+
+    return obj;
+}
+
+
+
+function createModalInfo(options) {
+    options = options || {};
+    options.ModalFormConfig = options.ModalFormConfig || {};
+
+    let ModalOuter = createModalOuter(options.ModalID);
+    let ModalDialog = createModalDialog();
+    ModalOuter.append(ModalDialog);
+
+    let ModalContent = createForm(options.ModalFormConfig);
+    ModalDialog.append(ModalContent);
+
+    let ModalHeader = createModalHeader();
+    ModalHeader.append(createModalCloseButton());
+    ModalHeader.append(createModalTitle(options.ModalTitle));
+    ModalContent.append(ModalHeader);
+
+    let ModalBody = createModalBody();
+    ModalContent.append(ModalBody);
+
+    let row = createTag({TagName: 'div', classes: ['row']});
+    let col12 = createTag({TagName: 'div', classes: ['col-xs-12']});
+
+    row.append(col12);
+
+    let headline = createTag({TagName: 'p', classes: ['h4', 'text-center']});
+
+    if (options.message == 'success') {
+        let essence = '№' + options.OderNumber;
+    } else {
+        let essence = 'не найден';
+    }
+
+    headline.innerHTML = 'Заказ' + ' ' + essence;
+
+    col12.append(headline);
+
+    if (   (options.message == 'success')
+        && (typeof options.Status == 'string')
+        && (options.Status.length > 0)
+       ) {
+        let status = createTag({TagName: 'p', classes: ['h3', 'text-center']});
+        status.innerHTML = options.Status;
+        col12.append(options.status);
+    }
+
+
+
+
+    let ModalFooter = createModalFooter();
+    ModalContent.append(ModalFooter);
+    ModalFooter.append(createCloseFooterBtn());
+
+    return ModalOuter;
+}
+
+
+
 function createModal(options) {
     options = options || {};
     options.ModalFormConfig = options.ModalFormConfig || {};
