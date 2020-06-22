@@ -304,7 +304,7 @@ function createModalInfo(options) {
     let ModalDialog = createModalDialog();
     ModalOuter.append(ModalDialog);
 
-    let ModalContent = createForm(options.ModalFormConfig);
+    let ModalContent = createTag({TagName: 'div', Classes: ['modal-content']});
     ModalDialog.append(ModalContent);
 
     let ModalHeader = createModalHeader();
@@ -315,12 +315,12 @@ function createModalInfo(options) {
     let ModalBody = createModalBody();
     ModalContent.append(ModalBody);
 
-    let row = createTag({TagName: 'div', classes: ['row']});
-    let col12 = createTag({TagName: 'div', classes: ['col-xs-12']});
+    let row = createTag({TagName: 'div', Classes: ['row']});
+    let col12 = createTag({TagName: 'div', Classes: ['col-xs-12']});
 
     row.append(col12);
 
-    let headline = createTag({TagName: 'p', classes: ['h4', 'text-center']});
+    let headline = createTag({TagName: 'p', Classes: ['h4', 'text-center']});
 
     if (options.message == 'success') {
         let essence = '№' + options.OderNumber;
@@ -336,12 +336,10 @@ function createModalInfo(options) {
         && (typeof options.Status == 'string')
         && (options.Status.length > 0)
        ) {
-        let status = createTag({TagName: 'p', classes: ['h3', 'text-center']});
+        let status = createTag({TagName: 'p', Classes: ['h3', 'text-center']});
         status.innerHTML = options.Status;
         col12.append(options.status);
     }
-
-
 
 
     let ModalFooter = createModalFooter();
