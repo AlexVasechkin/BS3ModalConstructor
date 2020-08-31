@@ -1,384 +1,47 @@
-function createModalOuter(id) {
-    id = id || '';
+let ModalCreator = {
+    createTag: function(options) {
+        options = options || {};
+        options.cls = options.cls || [];
+        options.attrs = options.attrs || [];
 
-    let ModalOuter = document.createElement('div');
+        if (   (typeof options.tag != 'string')
+            || (options.tag == '')
+          ) {
+            return null;
+        }
 
-    ModalOuter.classList.add('modal');
-    ModalOuter.classList.add('fade');
+        let obj = document.createElement(options.tag);
 
-    ModalOuter.setAttribute('tabindex', '-1');
-    ModalOuter.setAttribute('role', 'dialog');
-
-    if (typeof id == 'string') {
-        ModalOuter.setAttribute('id', id);
-    }
-
-    return ModalOuter;
-}
-
-function createModalDialog() {
-    let ModalDialog = document.createElement('div');
-    ModalDialog.classList.add('modal-dialog');
-    ModalDialog.setAttribute('role', 'document');
-
-    return ModalDialog;
-}
-
-function createForm(options) {
-    options = options || {};
-    options.classes = options.classes || [];
-    options.id = options.id || '';
-    options.method = options.method || 'post';
-    options.action = options.action || '';
-
-    let FM = document.createElement('form');
+        options.cls.forEach(function(element, index, array) {
+            obj.classList.add(element);
+        });
     
-    options.classes.forEach(function(element, index, array) {
-        FM.classList.add(element);
-    });
-
-    if (   (typeof options.id == 'string')
-        && (options.id.length > 0)
-       ) 
-    {
-        FM.setAttribute('id', options.id);
-    }
-
-    FM.setAttribute('method', options.method);
-    FM.setAttribute('action', options.action);
-
-    return FM;
-
-}
-
-function createModalContent() {
-    let ModalContent = document.createElement('div');
-    ModalContent.classList.add('modal-content');
-    return ModalContent;
-}
-
-
-
-function createModalTitle(title) {
-    title = title || '';
-
-    let ModalTitle = document.createElement('div');
-    ModalTitle.classList.add('modal-title');
-
-    ModalTitle.innerHTML = title;
-
-    return ModalTitle;
-}
-
-
-
-function createModalHeader() {
-    let MH = document.createElement('div');
-    MH.classList.add('modal-header');
-
-    return MH;
-}
-
-
-
-function createSpanTimes() {
-    let span = document.createElement('span');
-    span.setAttribute('aria-hidden', 'true');
-    span.innerHTML = '&times;';
-
-    return span;
-}
-
-
-
-function createModalCloseButton() {
-    let CloseButton = document.createElement('button');
-    CloseButton.setAttribute('type', 'button');
-    CloseButton.classList.add('close');
-    CloseButton.setAttribute('data-dismiss', 'modal');
-    CloseButton.setAttribute('aria-label', 'Close');
-    let ButtonContent = createSpanTimes();
-    CloseButton.append(ButtonContent);
-
-    return CloseButton;
-}
-
-
-
-function createModalBody() {
-    let MB = document.createElement('div');
-    MB.classList.add('modal-body');
-
-    return MB;
-}
-
-
-
-function createRow() {
-    let container = document.createElement('div');
-    container.classList.add('row');
-
-    return container;
-}
-
-function createCol(size) {
-    size = size || [];
-    let col = document.createElement('div');
-    size.forEach( function(element, index, array) {
-        col.classList.add(element);
-    });
-
-    return col;
-}
-
-function createFormGroup() {
-    let FG = document.createElement('div');
-    FG.classList.add('form-group');
-
-    return FG;
-}
-
-
-function createLabelFor(text, id) {
-    text = text || '';
-    id = id || '';
-    let LB = document.createElement('label');
-    LB.innerHTML = text;
-    LB.setAttribute('for', '');
-
-    return LB;
-}
-
-
-function createInput(name, options) {
-    options = options || {};
-    options.IsRequired = options.IsRequired || false;
-    options.Placeholder = options.Placeholder || '';
-    options.Value = options.Value || '';
-    options.id = options.id || '';
-    options.addClasses = options.addClasses || [];
-    options.Type = options.Type || 'text';
-
-    let TI = document.createElement('input');
-    TI.classList.add('form-control');
-    TI.setAttribute('type', options.Type);
-    TI.setAttribute('name', name);
-
-    if (options.IsRequired == true) {
-        TI.setAttribute('required', '');
-    }
-
-    if (   (typeof options.Placeholder == 'string')
-        && (options.Placeholder.length > 2)
-       )
-    {
-        TI.setAttribute('placeholder', options.Placeholder);
-    }
-
-    if (typeof options.Value == 'string') {
-        TI.setAttribute('value', options.Value);
-    }
-
-
-
-    if (   (typeof options.id == 'string')
-        && (options.id.length > 2)
-       )
-    {
-        TI.setAttribute('id', options.id);
-    }
-
-    options.addClasses.forEach(function(element, index, array ) {
-        TI.classList.add(element);
-    });
-
-    return TI;
-}
-
-
-
-function createInputGroup(options) {
-    options = options || {};
-
-    options.labelText = options.labelText || '';
-    options.labelFor = options.labelFor || '';
-    options.inputName = options.inputName || '';
-    options.inputPlaceholder = options.inputPlaceholder || '';
-    options.inputValue = options.inputValue || '';
-    options.inputIsRequired = options.inputIsRequired || false;
-    options.inputId = options.inputId || '';
-    options.inputClasses = options.inputClasses || [];
-    options.inputType = options.inputType || 'text';
-
-    let FG = createFormGroup();
-    let row = createRow();
-    FG.append(row);
+        options.attrs.forEach(function(element, index, array) {
+            obj.setAttribute(element.key, element.value);
+        });
     
-    let LabelCol = createCol(['col-xs-12', 'col-sm-3']);
-    if (options.labelText.length > 0) {
-        let LB = createLabelFor(options.labelText, options.labelFor);
-        LabelCol.append(LB);
-        row.append(LabelCol);
-    }
-
-
-    let InputCol = createCol(['col-xs-12', 'col-sm-6']);
-    let Input = createInput(options.inputName, {Placeholder: options.inputPlaceholder,
-                                                Value: options.inputValue,
-                                                Type: options.inputType,
-                                                IsRequired: options.inputIsRequired,
-                                                id: options.inputId,
-                                                addClasses: options.inputClasses
-                                               }
-                           );
+        if (   (typeof options.text == 'string')
+            && (options.text.length > 0)
+          )
+        {
+            obj.innerHTML = options.text;
+        }
     
-    InputCol.append(Input);
-    row.append(InputCol);
-
-    return FG;
-}
-
-
-function createModalFooter() {
-    let MF = document.createElement('div');
-    MF.classList.add('modal-footer');
-
-    return MF;
-}
-
-
-function createCloseFooterBtn() {
-    let Button = document.createElement('button');
-    Button.classList.add('btn');
-    Button.classList.add('btn-default');
-    Button.setAttribute('data-dismiss', 'modal');
-
-    Button.innerHTML = 'Отмена';
-
-    return Button;
-}
-
-function createSubmitFooterBtn() {
-    let Button = document.createElement('input');
-    Button.classList.add('btn');
-    Button.classList.add('btn-success');
-    Button.setAttribute('type', 'submit');
-    Button.setAttribute('value', 'Подтвердить');
-
-    return Button;
-}
-
-
-function createTag(options) {
-    options = options || {};
-    options.Classes = options.Classes || [];
-    options.Attributes = options.Attributes || [];
-
-
-    if (   (typeof options.TagName != 'string')
-        || (options.TagName == '')
-       ) {
-        return null;
+        return obj;
+    },
+    
+    createChildItems: function(Parent, Items) {
+        Parent = Parent || {};
+        Items = Items || [];
+    
+        for (let i = 0; i < Items.length; i++) {
+            let t = this.createTag(Items[i]);
+    
+            Parent.append(t);
+    
+            this.createChildItems(t, Items[i].items);
+        }
+    
+        return true;
     }
-
-    let obj = document.createElement(options.tagName);
-
-    options.Classes.forEach(function(element, index, array) {
-        obj.classList.add(element);
-    });
-
-    options.Attributes.forEach(function(element, index, array) {
-        obj.setAttribute(element.key, element.value);
-    });
-
-    return obj;
-}
-
-
-
-function createModalInfo(options) {
-    options = options || {};
-    options.ModalFormConfig = options.ModalFormConfig || {};
-
-    let ModalOuter = createModalOuter(options.ModalID);
-    let ModalDialog = createModalDialog();
-    ModalOuter.append(ModalDialog);
-
-    let ModalContent = createTag({TagName: 'div', Classes: ['modal-content']});
-    ModalDialog.append(ModalContent);
-
-    let ModalHeader = createModalHeader();
-    ModalHeader.append(createModalCloseButton());
-    ModalHeader.append(createModalTitle(options.ModalTitle));
-    ModalContent.append(ModalHeader);
-
-    let ModalBody = createModalBody();
-    ModalContent.append(ModalBody);
-
-    let row = createTag({TagName: 'div', Classes: ['row']});
-    let col12 = createTag({TagName: 'div', Classes: ['col-xs-12']});
-
-    row.append(col12);
-
-    let headline = createTag({TagName: 'p', Classes: ['h4', 'text-center']});
-
-    if (options.message == 'success') {
-        let essence = '№' + options.OderNumber;
-    } else {
-        let essence = 'не найден';
-    }
-
-    headline.innerHTML = 'Заказ' + ' ' + essence;
-
-    col12.append(headline);
-
-    if (   (options.message == 'success')
-        && (typeof options.Status == 'string')
-        && (options.Status.length > 0)
-       ) {
-        let status = createTag({TagName: 'p', Classes: ['h3', 'text-center']});
-        status.innerHTML = options.Status;
-        col12.append(options.status);
-    }
-
-
-    let ModalFooter = createModalFooter();
-    ModalContent.append(ModalFooter);
-    ModalFooter.append(createCloseFooterBtn());
-
-    return ModalOuter;
-}
-
-
-
-function createModal(options) {
-    options = options || {};
-    options.ModalFormConfig = options.ModalFormConfig || {};
-    options.FormFields = options.FormFields || {};
-
-    let ModalOuter = createModalOuter(options.ModalID);
-    let ModalDialog = createModalDialog();
-    ModalOuter.append(ModalDialog);
-
-    let ModalContent = createForm(options.ModalFormConfig);
-    ModalDialog.append(ModalContent);
-
-    let ModalHeader = createModalHeader();
-    ModalHeader.append(createModalCloseButton());
-    ModalHeader.append(createModalTitle(options.ModalTitle));
-    ModalContent.append(ModalHeader);
-
-    let ModalBody = createModalBody();
-    ModalContent.append(ModalBody);
-
-    options.FormFields.inputs.forEach(function(element, index, array){
-        ModalBody.append(createInputGroup(element));
-    });
-
-    let ModalFooter = createModalFooter();
-    ModalContent.append(ModalFooter);
-    ModalFooter.append(createCloseFooterBtn());
-    ModalFooter.append(createSubmitFooterBtn());
-
-    return ModalOuter;
-}
+};
